@@ -1,1 +1,2 @@
 data/train_store.csv filter=lfs diff=lfs merge=lfs -text
+data/clean_data.csv filter=lfs diff=lfs merge=lfs -text
