@@ -1,0 +1,4 @@
+artifact_location: file:///C:/Users/user/OneDrive/Desktop/10Academy/sales_prediction/notebooks/mlruns/1
+experiment_id: '1'
+lifecycle_stage: active
+name: Rossmann Pharmeceutical Sales Forecasting

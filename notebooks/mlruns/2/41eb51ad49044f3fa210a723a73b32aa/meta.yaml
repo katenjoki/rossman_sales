@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/user/OneDrive/Desktop/10Academy/sales_prediction/notebooks/mlruns/2/41eb51ad49044f3fa210a723a73b32aa/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '2'
+lifecycle_stage: active
+name: ''
+run_id: 41eb51ad49044f3fa210a723a73b32aa
+run_uuid: 41eb51ad49044f3fa210a723a73b32aa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1634148944784
+status: 1
+tags: []
+user_id: user
