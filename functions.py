@@ -7,11 +7,12 @@ warnings.filterwarnings("ignore")
 # data visualization
 import seaborn as sns 
 import plotly.express as px
+import streamlit as st
 import matplotlib.pyplot as plt
 
 # machine learning
 
-from sklearn.tree import DecisionTreeRegressor
+from sklearn.tree import DecisionTreeRegressor, plot_tree
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler
@@ -56,9 +57,9 @@ def loss_function(actual,pred):
     rmse=np.sqrt(mean_squared_error(actual,pred))
     mae=mean_absolute_error(actual,pred)
     r_squared = r2_score(actual,pred)
-    print('RMSE:',rmse)
-    print('MAE',mae)
-    print('R squared',r_squared)
+    #print('RMSE:',rmse)
+    #print('MAE',mae)
+    #print('R squared',r_squared)
     return rmse,mae,r_squared
 
 def split_data(train:pd.DataFrame,test:pd.DataFrame):
@@ -103,22 +104,16 @@ def plot_sales(data,col,x='Month',y='Sales',color=None):
     return fig
 
 
-#Factor plot
-def plot_cat(data,x,y,col,hue):
-    sns.catplot(data=data,x=x,y=y,col=col,hue=hue,kind='point')
-    plt.show()
-#Bar plot    
-def plot_bar(data,x,y1,y2):
-    plt.figure(figsize=(12,6))
-    plt.subplot(1,2,1)
-    sns.barplot(data = data, x = x, y = y1,palette='RdYlBu') 
-    plt.title(f'{x} VS {y1}')
-    plt.subplot(1,2,2)
-    sns.barplot(data = data, x = x, y = y2,palette='RdYlGn')
-    plt.title(f'{x} VS {y2}')
-    plt.show()
-#Histogram
-def plot_hist(data,col1,col2):
-    sns.histplot(data=data,x=col1,y=col2,bins=30)
-    plt.title(f'Distribution of {col1} by {col2}')
-    plt.show()
+def plot_feature_importance(train_x,model,model_name):
+    if model_name == 'SGD Regressor':
+        #feature_names = model.feature_names
+        importance = model.coef_
+    else:
+        importance = model.feature_importances_
+    feature_names = train_x.columns.tolist()
+    features_df = pd.DataFrame({'Features':feature_names,'Importance':importance})
+    features_df.sort_values(by='Importance',ascending=False,inplace=True)
+    fig = px.bar(features_df,x='Importance',y='Features',title=f'{model_name} Feature Importance',)
+    fig.update_traces(marker_color='firebrick')
+    return fig
+        
