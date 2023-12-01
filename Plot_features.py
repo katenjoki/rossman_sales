@@ -65,6 +65,7 @@ clean_train = pd.read_csv("clean_train.csv")
 train_store = pd.read_csv("train_store.csv")
 test_store = pd.read_csv("test_store.csv")
 
+st.table(clean_train.head())
 #Factor plot
 def plot_factor(data,x,y,col,hue):
     sns.factorplot(data=data,x=x,y=y,col=col,hue=hue)
