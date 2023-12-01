@@ -1,15 +1,9 @@
-import numpy as np
+import time
 import pandas as pd
-import datetime
-import seaborn as sns
-import plotly.express as px
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+
 from sklearn.linear_model import SGDRegressor
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score,accuracy_score
 import streamlit as st
 st.set_option('deprecation.showPyplotGlobalUse', False)
 #import plotting and ml functions
@@ -24,7 +18,6 @@ st.write("""
          This dashboard has 2 sections that can be seen on the sidebar to the left. \n
          * Plot features - This section contains different feature visualizations.
          * Regression Models (current) - This section runs different regression models and compares their individual evaluation metrics.
-            * On the sidebar, select the forecasting model.
          """)
 with st.expander("Most of the fields are self-explanatory. Click here to get a quick description of some features:"):
     st.write("""
@@ -49,11 +42,11 @@ with st.expander("Most of the fields are self-explanatory. Click here to get a q
     """)
 
 
-model_name = st.sidebar.selectbox("ML Models",("Random Forest Regressor",
-"Decision Tree Regressor","SGD Regressor"),placeholder="Select a model",index=None)
+model_name = st.sidebar.selectbox("ML Models",("Decision Tree Regressor",
+                                               "Random Forest Regressor","SGD Regressor"),placeholder="Select a model",index=None)
 
-clean_train = pd.read_csv("clean_train.csv")
 train_store = pd.read_csv("train_store.csv")
+train_store = train_store[:200000]
 test_store = pd.read_csv("test_store.csv")
 
 
@@ -65,44 +58,34 @@ st.header("Machine Learning Models")
 st.write("""
          The objective is to predict Sales (target variable) based on the features we have. 
          * The test set didn't have the feature Customer, which had a really strong positive correlation with Sales.
-         * As a result, the Customer feature was dropped from the train set, prior to modelling.""")
+         * As a result, the Customer feature was dropped from the train set, prior to modelling.\n
+         On the sidebar, select a model to predict Sales.""")
 st.divider()
-'''def add_params(model_name):
-    params = dict()
-    if model_name:
-        st.subheader(model_name)
-        if model_name == "Random Forest Regressor":
-            #max_depth = st.sidebar.slider("max_depth",0,10)
-            max_depth = st.sidebar.number_input('max_depth',min_value=0,max_value=10,value=None,)
-            n_estimators = st.sidebar.slider("n_estimators",100,150)
-            params["max_depth"] = max_depth
-            params["n_estimators"] = n_estimators
-        elif model_name == "Decision Tree Regressor":
-            max_depth = st.sidebar.slider("max_depth",2,10)
-            params["max_depth"] = max_depth
-        else:
-            max_iter = st.sidebar.slider("max_iter",1000,1500)
-            params["max_iter"] = max_iter
-        return params
-
-params = add_params(model_name)'''
 
 if model_name:
+    st.subheader(model_name)
     if model_name == "Random Forest Regressor":
         model = RandomForestRegressor(random_state=42)
     elif model_name == "Decision Tree Regressor":
         model = DecisionTreeRegressor(random_state=37)
     else:
         model = SGDRegressor(random_state=51)
-    
-    with st.spinner(f'Running the {model_name} model, P.S this can take a while :)'):
-        model.fit(X_train,y_train)
 
+    start_time = time.time()
+
+    with st.spinner(f'Running the {model_name} model.\nP.S this can take a while as the dataset is large :)'):
+        model.fit(X_train,y_train)
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    if elapsed_time <60:
+        st.write(f"Model training time: {elapsed_time:.2f} seconds")
+    else:
+        st.write(f"Model training time: {elapsed_time/60:.2f} minutes")
     y_pred = model.predict(X_test)
     rmse,mae,r_squared = loss_function(y_test,y_pred)
     r_squared_pct = r_squared * 100
     
-    st.text(f"Model Evaluation")
+    st.text(f"{model_name} Model Evaluation")
     st.write("Evaluation metrics enable us to evaluate model performance. \n Are we able to build a ML model that can accurately predict Sales, given the remaining features?")
     print(type(rmse))
     print('.....................')
