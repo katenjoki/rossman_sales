@@ -61,7 +61,6 @@ feature_name = st.sidebar.selectbox(
     "Select features to visualize",(
         "Correlation","Time Series Plot of Sales","Promotions","Store Type","Assortment","Competition Distance"))
 
-clean_train = pd.read_csv("clean_train.csv",compression='gzip',)
 train_store = pd.read_csv("train_store.csv",compression='gzip',)
 test_store = pd.read_csv("test_store.csv")
 
@@ -157,6 +156,7 @@ else:
     #sns.set(rc={'axes.facecolor':'black', 'figure.facecolor':'black'})
     s = sns.distplot(train_store.CompetitionDistance, color = 'red',)
     #s.set_facecolor('#000000')
+    plt.suptitle('Distribution of Competition Distance in metres',)#y=1.02)
     st.pyplot(fig)
     st.write(s)
     st.write("""

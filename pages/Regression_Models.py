@@ -46,7 +46,7 @@ model_name = st.sidebar.selectbox("ML Models",("Decision Tree Regressor",
                                                "Random Forest Regressor","SGD Regressor"),placeholder="Select a model",index=None)
 
 train_store = pd.read_csv("train_store.csv",compression='gzip',)
-#train_store = train_store[:200000]
+train_store = train_store[:200000]
 test_store = pd.read_csv("test_store.csv")
 
 
@@ -54,6 +54,7 @@ test_store = pd.read_csv("test_store.csv")
 X = train_store.loc[:,train_store.columns != "Sales"]
 y = train_store['Sales']
 X_train,X_test,y_train,y_test = split_data(train=train_store,test=test_store)
+st.table(X)
 st.header("Machine Learning Models")
 st.write("""
          The objective is to predict Sales (target variable) based on the features we have. 
