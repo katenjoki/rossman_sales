@@ -15,10 +15,12 @@ To predict Sales(target variable), these ml models were used:
 * Random Forest Regressor
 * Stochastic Gradient Regressor
 
-<h4>Evaluation metrics</h4>
+**Evaluation metrics **
+
+
 | model  |RMSE |MAE   | R-squared   |
 |---|----|----|----|
-|Decision Tree Regressor |
-|Random Forest Regressor |
-|SGD Regressor|
+|Decision Tree Regressor |  |  |  |
+|Random Forest Regressor |  |  |  |
+|SGD Regressor|  |  |  |
 
