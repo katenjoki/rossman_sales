@@ -91,6 +91,8 @@ elif feature_name == "Correlation":
     st.subheader("Correlation of features in the Rossmann Store Sales Dataset")
     fig = plt.figure(figsize = (8,6))
     cols = clean_train.select_dtypes(exclude='object').columns.tolist()
+    print('-------------------------------')
+    print(cols)
     cols.remove('Store')
     cols.remove('Sales_per_Customer')
     fig = px.imshow(clean_train[cols].corr(),color_continuous_scale='reds',title='Correlation Matrix')
