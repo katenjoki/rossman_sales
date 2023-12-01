@@ -45,8 +45,8 @@ with st.expander("Most of the fields are self-explanatory. Click here to get a q
 model_name = st.sidebar.selectbox("ML Models",("Decision Tree Regressor",
                                                "Random Forest Regressor","SGD Regressor"),placeholder="Select a model",index=None)
 
-train_store = pd.read_csv("train_store.csv")
-train_store = train_store[:200000]
+train_store = pd.read_csv("train_store.csv",compression='gzip',)
+#train_store = train_store[:200000]
 test_store = pd.read_csv("test_store.csv")
 
 
