@@ -61,6 +61,7 @@ feature_name = st.sidebar.selectbox(
     "Select features to visualize",(
         "Correlation","Time Series Plot of Sales","Promotions","Store Type","Assortment","Competition Distance"))
 
+clean_train = pd.read_csv("clean_train.csv",compression='gzip',)
 train_store = pd.read_csv("train_store.csv",compression='gzip',)
 test_store = pd.read_csv("test_store.csv")
 
