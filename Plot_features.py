@@ -83,8 +83,9 @@ def plot_bar(data,x,y1,y2):
 if feature_name == "Time Series Plot of Sales":
     st.plotly_chart(plot_stats(clean_train,'Sales'))
     st.write("""
-    - On average, sales are lowest days after Christmas and 31st Decemeber and highest a few weeks to Christmas
-    - Because most stores close on Christmas, a few days before the holiday, sales significantly increase and start dropping from 23rd 
+    - On average, sales are lowest days after Christmas and 31st December and highest a few weeks to Christmas
+    - Because most stores close on Christmas, a few days before the holiday, sales significantly increase and start dropping from 23rd
+    - We can also observe a mid-year peak, at around March to May. 
              """)
 elif feature_name == "Correlation":
     st.subheader("Correlation of features in the Rossmann Store Sales Dataset")
@@ -117,7 +118,7 @@ elif feature_name == 'Promotions':
         - However,stores participating in Promo2 seem to have **LOWER SALES**, than those not participating.
         - In fact, we have more stores participating in Promo2 yet they have lower sales!
         """)
-    st.table(train_store.groupby('Promo2').agg({'Store':'nunique','Sales':'sum'}).reset_index())
+    st.table(train_store.groupby('Promo2').agg({'Store':'nunique','Sales':'sum'}).reset_index()).rename(columns={'Sales':'Total Sales'})
 elif feature_name == "Store Type":
     st.subheader("Sales Comparison: Store Type")
     st.plotly_chart(plot_sales(train_store,'Promo',color='StoreType'))
@@ -131,23 +132,28 @@ elif feature_name == "Store Type":
     * Stores under in StoreType b could possible sell low priced, frequently bought items.
     * However, we can see that promotions lead to higher sales for all store types""")
 elif feature_name == "Assortment":
+    st.subheader("Sales Comparison: Assortment")
+    st.write("""
+    * Assortment - describes an assortment level: a = basic, b = extra, c = extended""")
     st.plotly_chart(plot_sales(train_store,'Promo',color="Assortment"))
     st.divider()
     st.plotly_chart(plot_sales(train_store,'SchoolHoliday',color="Assortment"))
     st.divider()
     st.plotly_chart(plot_sales(train_store,'SchoolHoliday',color="Assortment"))
     st.write("""
-    * Store Type b has the highest sales per month overall, regardles of Promo, State Holiday or School Holiday. 
-    * However, we can see that promotions lead to higher sales for all store types
-    * Assortment - describes an assortment level: a = basic, b = extra, c = extended.""")
+    * Promotions lead to higher sales for Assortments a and c.
+    * Assortment b has higher sales without a promotion, than with a promotion.
+    * Assortment c has higher sales than b and c, regardles of whether there's a School Holiday/ State Holiday or not.""")
 
 else:
     st.subheader("Competition Distance")
+    fig = px.scatter(train_store,x='CompetitionDistance',y='Sales',title='Sales vs Competition Distance (metres)')
+    st.plotly_chart(fig)
     fig = plt.figure(figsize = (8,6))
-    sns.set_theme(style='dark')
-    sns.set(rc={'axes.facecolor':'black', 'figure.facecolor':'black'})
+    #sns.set_theme(style='dark')
+    #sns.set(rc={'axes.facecolor':'black', 'figure.facecolor':'black'})
     s = sns.distplot(train_store.CompetitionDistance, color = 'red',)
-    s.set_facecolor('#000000')
+    #s.set_facecolor('#000000')
     st.pyplot(fig)
     st.write(s)
     st.write("""
