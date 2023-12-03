@@ -19,8 +19,13 @@ from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 from sklearn.metrics import mean_absolute_error,mean_squared_error,r2_score
 
 
+teststore = pd.read_csv("test_store.csv")
+
 def transform_features(data):
-    df = data.copy()
+    ml_cols = teststore.columns.tolist()
+    ml_cols.remove('Store')
+    df = data[ml_cols]
+
     #label encoding ordinal columns
     le = LabelEncoder()
     ord_columns = ['Promo2SinceYear','CompetitionOpenSinceYear','Year']
@@ -51,16 +56,13 @@ def transform_features(data):
     flatten = lambda nested_lists: [item for sublist in nested_lists for item in sublist]
 
     transform_df.columns = flatten(transform_cols)
-    sales = df.Sales.values
+    sales = data.Sales.values
     return transform_df,sales
 
 def loss_function(actual,pred):
     rmse=np.sqrt(mean_squared_error(actual,pred))
     mae=mean_absolute_error(actual,pred)
     r_squared = r2_score(actual,pred)
-    #print('RMSE:',rmse)
-    #print('MAE',mae)
-    #print('R squared',r_squared)
     return rmse,mae,r_squared
 
 def split_data(train:pd.DataFrame,test:pd.DataFrame):
