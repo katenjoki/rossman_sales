@@ -64,7 +64,7 @@ def loss_function(actual,pred):
 
 def split_data(train:pd.DataFrame,test:pd.DataFrame):
     ml_cols = test.columns.tolist()
-    st.write('ml cols',ml_cols)
+    #st.write('ml cols',ml_cols)
     ml_cols.remove('Store')
     X = train[ml_cols]
     y = train[['Sales']]
