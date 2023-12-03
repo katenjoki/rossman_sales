@@ -53,9 +53,13 @@ test_store = pd.read_csv("test_store.csv")
 
 
 ###ML Models
-X = train_store.loc[:,train_store.columns != "Sales"]
-y = train_store['Sales']
-X_train,X_test,y_train,y_test = split_data(train=train_store,test=test_store)
+#X = train_store.loc[:,train_store.columns != "Sales"]
+#y = train_store['Sales']
+#X_train,X_test,y_train,y_test = split_data(train=train_store,test=test_store)
+train,val,test = np.split(train_store.sample(frac=1),[int(len(train_store)*0.6),int(len(train_store)*0.8)])
+X_train,y_train = transform_features(train)
+X_test,y_test = transform_features(test)
+X_val,y_val = transform_features(val)
 
 st.header("Machine Learning Models")
 st.write("""
@@ -85,20 +89,25 @@ if model_name:
         st.write(f"Model training time: {elapsed_time:.2f} seconds")
     else:
         st.write(f"Model training time: {elapsed_time/60:.2f} minutes")
-    y_pred = model.predict(X_test)
-    rmse,mae,r_squared = loss_function(y_test,y_pred)
-    r_squared_pct = r_squared * 100
-    
+
     st.text(f"{model_name} Model Evaluation")
     st.write("Evaluation metrics enable us to evaluate model performance. \n Are we able to build a ML model that can accurately predict Sales, given the remaining features?")
-    print(type(rmse))
     print('.....................')
+    #validation score
+    y_pred_val = model.predict(X_val)
+    rmse,mae,r_squared = loss_function(y_val,y_pred_val)
+    r_squared_pct_val = r_squared * 100
     metrics = pd.DataFrame()
     metrics['metric'] = ['RMSE','MAE','Coefficient of Determination (R-squared)']
-    metrics['score'] = [rmse,mae,r_squared]
+    metrics['validation score'] = [rmse,mae,r_squared]
+    #test score
+    y_pred_test = model.predict(X_test)
+    rmse,mae,r_squared = loss_function(y_test,y_pred_test)
+    r_squared_pct_test = r_squared * 100
+    metrics['test score'] = [rmse,mae,r_squared]
     st.table(metrics)
     st.text("Interpretation")
-    st.write(f" - A R squared score of {round(r_squared,2)} meaning that {round(r_squared_pct)}% of the variability in Sales is explained by the features in the {model_name} model.")
+    st.write(f" - A R squared score of {round(r_squared,2)} means that {round(r_squared_pct_val)}% of the variability in Sales is explained by the features in the {model_name} model.")
     st.write(f" - An RMSE score of {round(rmse)} means that on average the models predictions differ from the actual Sales values by about {round(rmse)} sales.")
    
     st.plotly_chart(plot_feature_importance(X_train,model=model,model_name=model_name))
