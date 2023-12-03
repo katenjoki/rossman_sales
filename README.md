@@ -40,4 +40,4 @@ To predict Sales(target variable), these ml models were used:
 * A R<sup>2</sup> validation score of 0.9061 means that ~91% of the variability in Sales is explained by the features in the Random Forest Regressor model.
 
   <h3>MlOps</h3>
-  
+  Under construction :)
