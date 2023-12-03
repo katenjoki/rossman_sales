@@ -56,7 +56,7 @@ test_store = pd.read_csv("test_store.csv")
 #X = train_store.loc[:,train_store.columns != "Sales"]
 #y = train_store['Sales']
 #X_train,X_test,y_train,y_test = split_data(train=train_store,test=test_store)
-train,val,test = np.split(train_store,[int(len(train_store)*0.6),int(len(train_store)*0.8)])
+train,val,test = np.split(train_store.sample(frac=1jl),[int(len(train_store)*0.6),int(len(train_store)*0.8)])
 X_train,y_train = transform_features(train)
 X_test,y_test = transform_features(test)
 X_val,y_val = transform_features(val)
