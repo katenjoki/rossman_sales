@@ -49,7 +49,7 @@ model_name = st.sidebar.selectbox("ML Models",("Decision Tree Regressor",
 train_store = pd.read_csv("train_store.csv",compression='gzip',)
 train_store = train_store[:200000]
 test_store = pd.read_csv("test_store.csv")
-print('test store',test_store.head())
+st.write('test store',test_store.head())
 
 
 ###ML Models
