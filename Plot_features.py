@@ -81,6 +81,7 @@ def plot_bar(data,x,y1,y2):
     plt.title(f'{x} VS {y2}')
     plt.show()
 
+
 if feature_name == "Time Series Plot of Sales":
     st.plotly_chart(plot_stats(clean_train,'Sales'))
     st.write("""
@@ -121,7 +122,7 @@ elif feature_name == 'Promotions':
         - However,stores participating in Promo2 seem to have **LOWER SALES**, than those not participating.
         - In fact, we have more stores participating in Promo2 yet they have lower sales!
         """)
-    st.table(train_store.groupby('Promo2').agg({'Store':'nunique','Sales':'sum'}).reset_index()).rename(columns={'Sales':'Total Sales'})
+    st.table(train_store.groupby('Promo2').agg({'Store':'nunique','Sales':'sum'}).reset_index().rename(columns={'Sales':'Total Sales'}))
 elif feature_name == "Store Type":
     st.subheader("Sales Comparison: Store Type")
     st.plotly_chart(plot_sales(train_store,'Promo',color='StoreType'))

@@ -10,6 +10,7 @@ st.set_option('deprecation.showPyplotGlobalUse', False)
 from functions import *
 #import awesome_streamlit as ast
 
+st.cache_data(ttl=3600)
 
 st.set_page_config(page_title="Rossmann Pharmaceuticals Store Sales", layout="wide")
 
@@ -53,8 +54,9 @@ test_store = pd.read_csv("test_store.csv")
 ###ML Models
 X = train_store.loc[:,train_store.columns != "Sales"]
 y = train_store['Sales']
+
 X_train,X_test,y_train,y_test = split_data(train=train_store,test=test_store)
-st.table(X)
+
 st.header("Machine Learning Models")
 st.write("""
          The objective is to predict Sales (target variable) based on the features we have. 
@@ -66,16 +68,17 @@ st.divider()
 if model_name:
     st.subheader(model_name)
     if model_name == "Random Forest Regressor":
-        model = RandomForestRegressor(random_state=42)
+        model = RandomForestRegressor()
     elif model_name == "Decision Tree Regressor":
-        model = DecisionTreeRegressor(random_state=37)
+        model = DecisionTreeRegressor()
     else:
-        model = SGDRegressor(random_state=51)
+        model = SGDRegressor()
 
     start_time = time.time()
 
     with st.spinner(f'Running the {model_name} model.\nP.S this can take a while as the dataset is large :)'):
         model.fit(X_train,y_train)
+
     end_time = time.time()
     elapsed_time = end_time - start_time
     if elapsed_time <60:
