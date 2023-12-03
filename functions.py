@@ -51,7 +51,8 @@ def transform_features(data):
     flatten = lambda nested_lists: [item for sublist in nested_lists for item in sublist]
 
     transform_df.columns = flatten(transform_cols)
-    return transform_df
+    sales = df.Sales.values
+    return transform_df,sales
 
 def loss_function(actual,pred):
     rmse=np.sqrt(mean_squared_error(actual,pred))
